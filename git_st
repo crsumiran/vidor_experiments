@@ -1,0 +1,15 @@
+git add	div1.qip
+git add	div1.v
+git add	git_st
+git add	mult1.qip
+git add	mult1.v
+git add	mult1_bb.v
+git add	simple_alu.qpf
+git add	simple_alu.qsf
+git add	simple_alu.sv
+git add	simple_alu_nativelink_simulation.rpt
+git add	simple_alu_tb.sv
+git add	simple_alu_tb.sv.bak
+git add	simple_mult.qip
+git add	tb_simple_alu.cpp
+

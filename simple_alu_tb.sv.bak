@@ -1,0 +1,64 @@
+`timescale 1ns/1ps
+
+module tb_avalon_mm_slave;
+
+  // Parameters
+  localparam CLK_PERIOD = 10; // Clock period in ns
+
+  // Signals
+  logic clk;
+  logic rst_n;
+  logic [31:0] avs_address;
+  logic [31:0] avs_write_data;
+  logic avs_write;
+  logic avs_read;
+  logic [31:0] avs_read_data;
+
+  // Instantiate Avalon MM Slave
+  simple_alu dut (
+    .clk(clk),
+    .rst_n(rst_n),
+    .avs_address(avs_address),
+    .avs_write_data(avs_write_data),
+    .avs_write(avs_write),
+    .avs_read(avs_read),
+    .avs_read_data(avs_read_data)
+  );
+
+  // Clock Generation
+  initial begin
+    clk = 0;
+    forever #CLK_PERIOD clk = ~clk;
+  end
+
+  // Reset Generation
+  initial begin
+    rst_n = 0;
+    #2 rst_n = 1;
+    #20; // Allow for a few clock cycles after reset for stability
+  end
+
+  // Test Sequence
+  initial begin
+    // Perform a write operation
+    avs_address = 0; // Set the address for the write operation
+    avs_write_data = 32'h12345678; // Data to be written
+    avs_write = 1; // Enable write
+    avs_read = 0; // Disable read
+    #50; // Wait for a few clock cycles
+
+    // Perform a read operation
+    avs_address = 0; // Set the address for the read operation
+    avs_write = 0; // Disable write
+    avs_read = 1; // Enable read
+    #50; // Wait for a few clock cycles
+
+    // Check the read data
+    if (avs_read_data !== avs_write_data)
+      $fatal("Test failed: Read data does not match expected data");
+
+    // End simulation
+    $finish;
+  end
+
+endmodule
